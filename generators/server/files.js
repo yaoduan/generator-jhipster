@@ -1101,6 +1101,13 @@ const serverFiles = {
             ]
         },
         {
+            condition: generator => !generator.skipUserManagement && generator.reactive,
+            path: SERVER_MAIN_SRC_DIR,
+            templates: [
+                { file: 'package/repository/reactive/UserRepository.java', renameTo: generator => `${generator.javaDir}repository/reactive/UserRepository.java` },
+            ]
+        },
+        {
             condition: generator => !generator.skipUserManagement && generator.searchEngine === 'elasticsearch',
             path: SERVER_MAIN_SRC_DIR,
             templates: [
