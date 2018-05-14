@@ -148,6 +148,7 @@ module.exports = class extends BaseGenerator {
                     this.applicationType = 'monolith';
                 }
                 this.reactive = this.applicationType === 'reactive';
+                this.reactiveRepository = this.reactive ? 'reactive/' : '';
                 this.packageName = this.config.get('packageName');
                 this.serverPort = this.config.get('serverPort');
                 if (this.serverPort === undefined) {
