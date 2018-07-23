@@ -39,8 +39,8 @@ module.exports = class extends BaseGenerator {
 
                 exec('gcloud version', (err) => {
                     if (err) {
-                        this.log.error('You don\'t have the Cloud SDK (gcloud) installed. ' +
-                            'Download it from https://cloud.google.com/sdk/install');
+                        this.log.error('You don\'t have the Cloud SDK (gcloud) installed. '
+                            + 'Download it from https://cloud.google.com/sdk/install');
                         this.abort = true;
                     }
                     done();
@@ -113,7 +113,7 @@ module.exports = class extends BaseGenerator {
     defaultServiceNameChoices(defaultServiceExists) {
         if (this.applicationType === 'monolith') {
             return defaultServiceExists ? ['default', _.kebabCase(this.baseName)] : ['default'];
-        } else if (this.applicationType === 'gateway') {
+        } if (this.applicationType === 'gateway') {
             return ['default'];
         }
 
@@ -232,12 +232,12 @@ module.exports = class extends BaseGenerator {
                             { value: 'F1', name: 'F1 - 600MHz, 128MB, Automatic Scaling' },
                             { value: 'F2', name: 'F2 - 1.2GHz, 256MB, Automatic Scaling' },
                             { value: 'F4', name: 'F4 - 2.4GHz, 512MB, Automatic Scaling' },
-                            { value: 'F4_1G', name: 'F4_1G - 2.4GHz, 1GB, Automatic/Manual Scaling' },
+                            { value: 'F4_1G', name: 'F4_1G - 2.4GHz, 1GB, Automatic' },
                             { value: 'B1', name: 'B1 - 600MHz, 128MB, Basic or Manual Scaling' },
                             { value: 'B2', name: 'B2 - 1.2GHz, 256MB, Basic or Manual Scaling' },
                             { value: 'B4', name: 'B4 - 2.4GHz, 512MB, Basic or Manual Scaling' },
-                            { value: 'B4_1G', name: 'B4_1G - 2.4GHz, 1GB, Manual Scaling' },
-                            { value: 'B8', name: 'B8 - 4.8GHz, 1GB, Manual Scaling' },
+                            { value: 'B4_1G', name: 'B4_1G - 2.4GHz, 1GB, Basic or Manual Scaling' },
+                            { value: 'B8', name: 'B8 - 4.8GHz, 1GB, Basic or Manual Scaling' },
                         ],
                         default: this.gaeInstanceClass ? this.gaeInstanceClass : 0
                     }];
@@ -591,17 +591,19 @@ module.exports = class extends BaseGenerator {
             },
 
             saveConfig() {
-                this.config.set('gcpProjectId', this.gcpProjectId);
-                this.config.set('gcpCloudSqlInstanceName', this.gcpCloudSqlInstanceName);
-                this.config.set('gcpCloudSqlUserName', this.gcpCloudSqlUserName);
-                this.config.set('gcpCloudSqlDatabaseName', this.gcpDatabaseName);
-                this.config.set('gaeServiceName', this.gaeServiceName);
-                this.config.set('gaeLocation', this.gaeLocation);
-                this.config.set('gaeInstanceClass', this.gaeInstanceClass);
-                this.config.set('gaeScalingType', this.gaeScalingType);
-                this.config.set('gaeInstances', this.gaeInstances);
-                this.config.set('gaeMinInstances', this.gaeMinInstances);
-                this.config.set('gaeMaxInstances', this.gaeMaxInstances);
+                this.config.set({
+                    gcpProjectId: this.gcpProjectId,
+                    gcpCloudSqlInstanceName: this.gcpCloudSqlInstanceName,
+                    gcpCloudSqlUserName: this.gcpCloudSqlUserName,
+                    gcpCloudSqlDatabaseName: this.gcpDatabaseName,
+                    gaeServiceName: this.gaeServiceName,
+                    gaeLocation: this.gaeLocation,
+                    gaeInstanceClass: this.gaeInstanceClass,
+                    gaeScalingType: this.gaeScalingType,
+                    gaeInstances: this.gaeInstances,
+                    gaeMinInstances: this.gaeMinInstances,
+                    gaeMaxInstances: this.gaeMaxInstances
+                });
             }
         };
     }

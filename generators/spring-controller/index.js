@@ -34,6 +34,13 @@ module.exports = class extends BaseGenerator {
         this.argument('name', { type: String, required: true });
         this.name = this.options.name;
 
+        this.option('default', {
+            type: Boolean,
+            default: false,
+            description: 'default option'
+        });
+        this.defaultOption = this.options.default;
+
         const blueprint = this.config.get('blueprint');
         if (!opts.fromBlueprint) {
             // use global variable since getters dont have access to instance property
@@ -42,7 +49,8 @@ module.exports = class extends BaseGenerator {
                 'spring-controller',
                 {
                     force: this.options.force,
-                    arguments: [this.name]
+                    arguments: [this.name],
+                    default: this.options.default
                 }
             );
         } else {
@@ -69,6 +77,7 @@ module.exports = class extends BaseGenerator {
             }
         };
     }
+
     get initializing() {
         if (useBlueprint) return;
         return this._initializing();
@@ -80,6 +89,7 @@ module.exports = class extends BaseGenerator {
             askForControllerActions: prompts.askForControllerActions
         };
     }
+
     get prompting() {
         if (useBlueprint) return;
         return this._prompting();
@@ -94,6 +104,7 @@ module.exports = class extends BaseGenerator {
             }
         };
     }
+
     get default() {
         if (useBlueprint) return;
         return this._default();
@@ -103,12 +114,12 @@ module.exports = class extends BaseGenerator {
     _writing() {
         return {
             writing() {
-                this.controllerClass = _.upperFirst(this.name);
-                this.controllerInstance = _.lowerFirst(this.name);
+                this.controllerClass = _.upperFirst(this.name) + (this.name.endsWith('Resource') ? '' : 'Resource');
+                this.controllerInstance = _.lowerFirst(this.controllerClass);
                 this.apiPrefix = _.kebabCase(this.name);
 
                 if (this.controllerActions.length === 0) {
-                    this.log(chalk.green('No controller actions found, addin a default action'));
+                    this.log(chalk.green('No controller actions found, adding a default action'));
                     this.controllerActions.push({
                         actionName: 'defaultAction',
                         actionMethod: 'Get'
@@ -134,17 +145,17 @@ module.exports = class extends BaseGenerator {
                 });
 
                 this.template(
-                    `${SERVER_MAIN_SRC_DIR}package/web/rest/Resource.java.ejs`,
-                    `${SERVER_MAIN_SRC_DIR}${this.packageFolder}/web/rest/${this.controllerClass}Resource.java`
+                    `${this.fetchFromInstalledJHipster('spring-controller/templates')}/${SERVER_MAIN_SRC_DIR}package/web/rest/Resource.java.ejs`,
+                    `${SERVER_MAIN_SRC_DIR}${this.packageFolder}/web/rest/${this.controllerClass}.java`
                 );
-
                 this.template(
-                    `${SERVER_TEST_SRC_DIR}package/web/rest/ResourceIntTest.java.ejs`,
-                    `${SERVER_TEST_SRC_DIR}${this.packageFolder}/web/rest/${this.controllerClass}ResourceIntTest.java`
+                    `${this.fetchFromInstalledJHipster('spring-controller/templates')}/${SERVER_TEST_SRC_DIR}package/web/rest/ResourceIntTest.java.ejs`,
+                    `${SERVER_TEST_SRC_DIR}${this.packageFolder}/web/rest/${this.controllerClass}IntTest.java`
                 );
             }
         };
     }
+
     get writing() {
         if (useBlueprint) return;
         return this._writing();

@@ -18,7 +18,7 @@
  */
 
 // version of docker images
-const DOCKER_JHIPSTER_REGISTRY = 'jhipster/jhipster-registry:v3.3.0';
+const DOCKER_JHIPSTER_REGISTRY = 'jhipster/jhipster-registry:v4.0.0';
 const DOCKER_JAVA_JRE = 'openjdk:8-jre-alpine';
 const DOCKER_MYSQL = 'mysql:5.7.20';
 const DOCKER_MARIADB = 'mariadb:10.3.7';
@@ -42,8 +42,8 @@ const DOCKER_JHIPSTER_LOGSTASH = 'jhipster/jhipster-logstash:v3.0.1';
 const DOCKER_JHIPSTER_IMPORT_DASHBOARDS = 'jhipster/jhipster-import-dashboards:v3.0.1';
 const DOCKER_JHIPSTER_ZIPKIN = 'jhipster/jhipster-zipkin:v3.0.1';
 const DOCKER_TRAEFIK = 'traefik:1.5.3';
-const DOCKER_CONSUL = 'consul:1.0.2';
-const DOCKER_CONSUL_CONFIG_LOADER = 'jhipster/consul-config-loader:v0.2.2';
+const DOCKER_CONSUL = 'consul:1.2.0';
+const DOCKER_CONSUL_CONFIG_LOADER = 'jhipster/consul-config-loader:v0.3.0';
 const DOCKER_PROMETHEUS = 'prom/prometheus:v1.6.3';
 const DOCKER_PROMETHEUS_ALERTMANAGER = 'prom/alertmanager:v0.6.2';
 const DOCKER_GRAFANA = 'grafana/grafana:4.3.2';
@@ -58,9 +58,9 @@ const JAVA_VERSION = '1.8'; // Java version is forced to be 1.8. We keep the var
 const SCALA_VERSION = '2.12.6';
 
 // version of Node, Yarn, NPM
-const NODE_VERSION = '8.11.2';
+const NODE_VERSION = '8.11.3';
 const YARN_VERSION = '1.6.0';
-const NPM_VERSION = '5.8.0';
+const NPM_VERSION = '6.1.0';
 
 // all constants used throughout all generators
 
@@ -104,6 +104,9 @@ const LANGUAGES = [
         name: 'Arabic (Libya)', dispName: 'العربية', value: 'ar-ly', rtl: true, skipForLocale: true
     },
     { name: 'Armenian', dispName: 'Հայերեն', value: 'hy' },
+    {
+        name: 'Belorussian', dispName: 'Беларускі', value: 'by', localeId: 'by'
+    },
     { name: 'Catalan', dispName: 'Català', value: 'ca' },
     {
         name: 'Chinese (Simplified)', dispName: '中文（简体）', value: 'zh-cn', localeId: 'zh-Hans'

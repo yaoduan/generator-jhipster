@@ -147,7 +147,6 @@ const expectedFiles = {
         `${CLIENT_MAIN_SRC_DIR}i18n/en/audits.json`,
         `${CLIENT_MAIN_SRC_DIR}i18n/en/configuration.json`,
         `${CLIENT_MAIN_SRC_DIR}i18n/en/error.json`,
-        `${CLIENT_MAIN_SRC_DIR}i18n/en/gateway.json`,
         `${CLIENT_MAIN_SRC_DIR}i18n/en/global.json`,
         `${CLIENT_MAIN_SRC_DIR}i18n/en/health.json`,
         `${CLIENT_MAIN_SRC_DIR}i18n/en/login.json`,
@@ -165,7 +164,6 @@ const expectedFiles = {
         `${CLIENT_MAIN_SRC_DIR}i18n/fr/configuration.json`,
         `${CLIENT_MAIN_SRC_DIR}i18n/fr/error.json`,
         `${CLIENT_MAIN_SRC_DIR}i18n/fr/global.json`,
-        `${CLIENT_MAIN_SRC_DIR}i18n/fr/gateway.json`,
         `${CLIENT_MAIN_SRC_DIR}i18n/fr/health.json`,
         `${CLIENT_MAIN_SRC_DIR}i18n/fr/login.json`,
         `${CLIENT_MAIN_SRC_DIR}i18n/fr/logs.json`,
@@ -480,18 +478,22 @@ const expectedFiles = {
     ],
 
     mysql: [
+        `${SERVER_MAIN_SRC_DIR}com/mycompany/myapp/config/LiquibaseConfiguration.java`,
         `${DOCKER_DIR}mysql.yml`
     ],
 
     mariadb: [
+        `${SERVER_MAIN_SRC_DIR}com/mycompany/myapp/config/LiquibaseConfiguration.java`,
         `${DOCKER_DIR}mariadb.yml`
     ],
 
     mssql: [
+        `${SERVER_MAIN_SRC_DIR}com/mycompany/myapp/config/LiquibaseConfiguration.java`,
         `${DOCKER_DIR}mssql.yml`
     ],
 
     postgresql: [
+        `${SERVER_MAIN_SRC_DIR}com/mycompany/myapp/config/LiquibaseConfiguration.java`,
         `${DOCKER_DIR}postgresql.yml`
     ],
 

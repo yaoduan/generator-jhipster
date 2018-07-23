@@ -38,11 +38,11 @@ function askForControllerActions() {
                 validate: (input) => {
                     if (!(/^([a-zA-Z0-9_]*)$/.test(input))) {
                         return 'Your action name cannot contain special characters';
-                    } else if (input === '') {
+                    } if (input === '') {
                         return 'Your action name cannot be empty';
-                    } else if (input.charAt(0) === input.charAt(0).toUpperCase()) {
+                    } if (input.charAt(0) === input.charAt(0).toUpperCase()) {
                         return 'Your action name cannot start with an upper case letter';
-                    } else if (jhiCore.isReservedFieldName(input)) {
+                    } if (jhiCore.isReservedFieldName(input)) {
                         return 'Your action name cannot contain a Java, Angular or React reserved keyword';
                     }
 
@@ -77,20 +77,24 @@ function askForControllerActions() {
             }
         ];
 
-        this.prompt(prompts).then((props) => {
-            if (props.actionAdd) {
-                const controllerAction = {
-                    actionName: props.actionName,
-                    actionMethod: props.actionMethod
-                };
+        if (!this.defaultOption) {
+            this.prompt(prompts).then((props) => {
+                if (props.actionAdd) {
+                    const controllerAction = {
+                        actionName: props.actionName,
+                        actionMethod: props.actionMethod
+                    };
 
-                this.controllerActions.push(controllerAction);
+                    this.controllerActions.push(controllerAction);
 
-                askForControllerAction(done);
-            } else {
-                done();
-            }
-        });
+                    askForControllerAction(done);
+                } else {
+                    done();
+                }
+            });
+        } else {
+            done();
+        }
     };
 
     const done = this.async();
