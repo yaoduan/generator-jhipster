@@ -24,12 +24,19 @@ const prompts = require('./prompts');
 const writeFiles = require('./files').writeFiles;
 const BaseGenerator = require('../generator-base');
 const docker = require('../docker-base');
+const statistics = require('../statistics');
 
 const constants = require('../generator-constants');
 
 module.exports = class extends BaseGenerator {
     constructor(args, opts) {
         super(args, opts);
+        // This adds support for a `--from-cli` flag
+        this.option('from-cli', {
+            desc: 'Indicates the command is run from JHipster CLI',
+            type: Boolean,
+            defaults: false
+        });
         // This adds support for a `--skip-checks` flag
         this.option('skip-checks', {
             desc: 'Check the status of the required tools',
@@ -40,6 +47,16 @@ module.exports = class extends BaseGenerator {
 
     get initializing() {
         return {
+            validateFromCli() {
+                if (!this.options['from-cli']) {
+                    this.warning(
+                        `Deprecated: JHipster seems to be invoked using Yeoman command. Please use the JHipster CLI. Run ${chalk.red(
+                            'jhipster <command>'
+                        )} instead of ${chalk.red('yo jhipster:<command>')}`
+                    );
+                }
+            },
+
             sayHello() {
                 this.log(chalk.white(`${chalk.bold('🐳')}  Welcome to the JHipster Docker Compose Sub-Generator ${chalk.bold('🐳')}`));
                 this.log(chalk.white(`Files will be generated in folder: ${chalk.yellow(this.destinationRoot())}`));
@@ -75,16 +92,24 @@ module.exports = class extends BaseGenerator {
 
                 shelljs.exec('docker-compose -v', { silent: true }, (code, stdout, stderr) => {
                     if (stderr) {
-                        this.log(chalk.red('Docker Compose 1.6.0 or later is not installed on your computer.\n'
-                            + '         Read https://docs.docker.com/compose/install/\n'));
+                        this.log(
+                            chalk.red(
+                                'Docker Compose 1.6.0 or later is not installed on your computer.\n' +
+                                    '         Read https://docs.docker.com/compose/install/\n'
+                            )
+                        );
                     } else {
                         const composeVersion = stdout.split(' ')[2].replace(/,/g, '');
                         const composeVersionMajor = composeVersion.split('.')[0];
                         const composeVersionMinor = composeVersion.split('.')[1];
                         if (composeVersionMajor < 1 || (composeVersionMajor === 1 && composeVersionMinor < 6)) {
-                            this.log(chalk.red(`${'Docker Compose version 1.6.0 or later is not installed on your computer.\n'
-                                + '         Docker Compose version found: '}${composeVersion}\n`
-                                + '         Read https://docs.docker.com/compose/install/\n'));
+                            this.log(
+                                chalk.red(
+                                    `${'Docker Compose version 1.6.0 or later is not installed on your computer.\n' +
+                                        '         Docker Compose version found: '}${composeVersion}\n` +
+                                        '         Read https://docs.docker.com/compose/install/\n'
+                                )
+                            );
                         }
                     }
                     done();
@@ -132,8 +157,7 @@ module.exports = class extends BaseGenerator {
     get configuring() {
         return {
             insight() {
-                const insight = this.insight();
-                insight.trackWithEvent('generator', 'docker-compose');
+                statistics.sendSubGenEvent('generator', 'docker-compose');
             },
 
             checkImages: docker.checkImages,
@@ -144,6 +168,7 @@ module.exports = class extends BaseGenerator {
                 this.appsYaml = [];
                 this.keycloakRedirectUri = '';
                 let portIndex = 8080;
+                this.serverPort = portIndex;
                 this.appsFolders.forEach((appsFolder, index) => {
                     const appConfig = this.appConfigs[index];
                     const lowercaseBaseName = appConfig.baseName.toLowerCase();
@@ -224,7 +249,8 @@ module.exports = class extends BaseGenerator {
                             }
                             parentConfiguration[`${databaseServiceName}-node`] = dbNodeConfig;
                             if (database === 'mongodb') {
-                                parentConfiguration[`${databaseServiceName}-config`] = clusterDbYaml.services[`${databaseServiceName}-config`];
+                                parentConfiguration[`${databaseServiceName}-config`] =
+                                    clusterDbYaml.services[`${databaseServiceName}-config`];
                             }
                         }
 
@@ -303,7 +329,7 @@ module.exports = class extends BaseGenerator {
         if (this.gatewayNb + this.monolithicNb > 1) {
             this.log('\nYour applications will be accessible on these URLs:');
             let portIndex = 8080;
-            this.appConfigs.forEach((appConfig) => {
+            this.appConfigs.forEach(appConfig => {
                 if (appConfig.applicationType === 'gateway' || appConfig.applicationType === 'monolith') {
                     this.log(`\t- ${appConfig.baseName}: http://localhost:${portIndex}`);
                     portIndex++;

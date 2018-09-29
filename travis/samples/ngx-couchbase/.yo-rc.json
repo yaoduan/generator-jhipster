@@ -11,16 +11,14 @@
       "databaseType": "couchbase",
       "devDatabaseType": "couchbase",
       "prodDatabaseType": "couchbase",
-      "reactive": true,
       "searchEngine": false,
       "messageBroker": false,
       "serviceDiscoveryType": false,
       "buildTool": "maven",
       "enableSwaggerCodegen": false,
-      "jwtSecretKey": "6253157746f73d0c8b7cee248235fbeb91429338",
       "clientFramework": "angularX",
       "useSass": false,
-      "clientPackageManager": "yarn",
+      "clientPackageManager": "npm",
       "applicationType": "monolith",
       "testFrameworks": [
         "gatling",
@@ -31,7 +29,8 @@
       "enableTranslation": true,
       "nativeLanguage": "en",
       "languages": [
-        "en"
+        "en",
+        "fr"
       ]
     }
   }

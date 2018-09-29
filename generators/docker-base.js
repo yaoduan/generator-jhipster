@@ -32,14 +32,14 @@ module.exports = {
     checkImages,
     generateJwtSecret,
     configureImageNames,
-    setAppsFolderPaths,
+    setAppsFolderPaths
 };
 
 /**
  * Check Images
  */
 function checkImages() {
-    this.log('\nChecking Docker images in applications\' directories...');
+    this.log('\nChecking Docker images in applications directories...');
 
     let imagePath = '';
     let runCommand = '';
@@ -49,10 +49,10 @@ function checkImages() {
         const appConfig = this.appConfigs[index];
         if (appConfig.buildTool === 'maven') {
             imagePath = this.destinationPath(`${this.directoryPath + appsFolder}/target/docker`);
-            runCommand = './mvnw verify -Pprod dockerfile:build';
+            runCommand = './mvnw package -Pprod jib:dockerBuild';
         } else {
             imagePath = this.destinationPath(`${this.directoryPath + appsFolder}/build/docker`);
-            runCommand = './gradlew -Pprod bootWar buildDocker';
+            runCommand = './gradlew bootWar -Pprod jibDockerBuild';
         }
         if (shelljs.ls(imagePath).length === 0) {
             this.warning = true;
@@ -66,7 +66,7 @@ function checkImages() {
  */
 function generateJwtSecret() {
     if (this.jwtSecretKey === undefined) {
-        this.jwtSecretKey = crypto.randomBytes(20).toString('hex');
+        this.jwtSecretKey = Buffer.from(crypto.randomBytes(50).toString('hex')).toString('base64');
     }
 }
 
